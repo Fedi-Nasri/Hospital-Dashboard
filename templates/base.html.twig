@@ -3,15 +3,63 @@
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
+        
         {% block stylesheets %}
+
+            <link href="{{ asset("assets/plugins/global/plugins.bundle.css") }}" rel="stylesheet" type="text/css" />
+            <link href="{{ asset("assets/css/style.bundle.css") }}" rel="stylesheet" type="text/css" />
+            <link href="assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css"/>
+            <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+
         {% endblock %}
 
         {% block javascripts %}
-            {% block importmap %}{{ importmap('app') }}{% endblock %}
+
+        {#<script src="{{ asset('assets/plugins/global/plugins.bundle-fr.js') }}"></script>#}
+        <script src="assets/plugins/global/plugins.bundle.js"></script>
+        <script src="{{ asset('assets/js/scripts.bundle.js') }}"></script>
+        <script src="{{ asset('assets/js/charth.js') }}"></script>
+        <script src="{{ asset('assets/js/customChart/patient.js') }}"></script>
+        {#<script src="{{ asset('assets/js/customChart/app.js') }}"></script>#}
+        <script src="{{ asset('assets/js/widgets.bundle.js') }}"></script>
+
+
+        {# {% block importmap %}{{ importmap('app') }}{% endblock %}#}
+
+
         {% endblock %}
     </head>
-    <body>
-        {% block body %}{% endblock %}
+
+    <body data-kt-name="metronic" id="kt_body" class="header-tablet-and-mobile-fixed aside-enabled">
+    <script>if ( document.documentElement ) { const defaultThemeMode = "system"; const name = document.body.getAttribute("data-kt-name"); let themeMode = localStorage.getItem("kt_" + ( name !== null ? name + "_" : "" ) + "theme_mode_value"); if ( themeMode === null ) { if ( defaultThemeMode === "system" ) { themeMode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"; } else { themeMode = defaultThemeMode; } } document.documentElement.setAttribute("data-theme", themeMode); }</script>
+    <!--begin::Root-->
+    <div class="d-flex flex-column flex-root">
+        <!--begin::Page-->
+        <div class="page d-flex flex-row flex-column-fluid">
+            {% include 'includes/side.html.twig' %}
+            <!--begin::Wrapper-->
+            <div class="wrapper d-flex flex-column flex-row-fluid" id="kt_wrapper">
+
+            {% include 'includes/header.html.twig' %}
+
+            {#{% block breadcrumb %}{% endblock %}#}
+                <!--begin::Content-->
+                <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+                    <!--begin::Post-->
+                    <div class="post d-flex flex-column-fluid" id="kt_post">
+                        {% block body %}
+                        {% endblock %}
+                    </div>
+                    <!--end::Post-->
+                </div>
+                <!--end::content-->
+            </div>
+            <!--end::Wrapper-->
+        </div>
+        <!--end::Page-->
+    </div>
+    <!--end::Roor-->
     </body>
+
+        
 </html>
