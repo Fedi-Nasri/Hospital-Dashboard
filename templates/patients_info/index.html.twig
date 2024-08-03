@@ -1,0 +1,88 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello PatientsInfoController!{% endblock %}
+
+{% block stylesheets %}
+    {{parent()}}
+    <link href="{{ asset("assets/plugins/custom/datatables/datatables.bundle.css") }}" rel="stylesheet"  type="text/css"/>
+    <link href="{{asset("assets/plugins/global/plugins.bundle.css") }}" rel="stylesheet" type="text/css"/>
+    
+{% endblock %}
+
+{% block body %}
+
+<!--begin::Container-->
+<div id="kt_content_container" class="container-xxl">
+
+    <table id="patient_table" class="table table-row-bordered gy-5">
+        <thead>
+            <tr class="fw-semibold fs-6 text-muted">
+                <th>id</th>
+                <th>nom</th>
+                <th>prenom</th>
+                <th>date of  birth</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>000</td>
+                <td>iron</td>
+                <td>man</td>
+                <td>2011/04/25</td>
+            </tr>
+
+
+                    {% for patient in patients %}
+            <tr>
+                <!-- Replace `property1`, `property2`, etc., with actual properties of your object -->
+                <td>{{ patient.id }}</td>
+                <td>{{ patient.nom }}</td>
+                <td>{{ patient.prenom }}</td>
+                <td>{{ patient.dateNaissance ? patient.dateNaissance|date('Y/m/d') : 'N/A' }}</td>
+                <!-- Add more td elements as needed based on your object's properties -->
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+    {% block javascripts %}
+        {{ parent() }}
+        <script src="{{ asset('assets/plugins/custom/datatables/datatables.bundle.js') }}"></script>
+    {% endblock %}
+
+<script>
+    $("#patient_table").DataTable({
+    initComplete: function () {
+        this.api()
+            .columns()
+            .every(function () {
+                let column = this;
+ 
+                // Create select element
+                let select = document.createElement('select');
+                select.add(new Option(''));
+                column.header().replaceChildren(select);
+ 
+                // Apply listener for user change in value
+                select.addEventListener('change', function () {
+                    column
+                        .search(select.value, {exact: true})
+                        .draw();
+                });
+ 
+                // Add list of options
+                column
+                    .data()
+                    .unique()
+                    .sort()
+                    .each(function (d, j) {
+                        select.add(new Option(d));
+                    });
+            });
+    }
+    
+});
+</script>
+
+{% endblock %}

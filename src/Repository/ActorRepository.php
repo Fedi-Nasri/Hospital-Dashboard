@@ -2,47 +2,48 @@
 
 namespace App\Repository;
 
-use App\Entity\Medecin;
+use App\Entity\Actor;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<Medecin>
+ * @extends ServiceEntityRepository<Actor>
  */
-class MedecinRepository extends ServiceEntityRepository
+class ActorRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Medecin::class);
+        parent::__construct($registry, Actor::class);
     }
 
-    public function countM(): int
+    //function thta count the nb of actor
+    public function countA(): int
     {
-        return $this->createQueryBuilder('m')
-            ->select('COUNT(m.id)')
+        return $this->createQueryBuilder('a')
+            ->select('COUNT(a.id)')
             ->getQuery()
             ->getSingleScalarResult();
     }
 
     //    /**
-    //     * @return Medecin[] Returns an array of Medecin objects
+    //     * @return Actor[] Returns an array of Actor objects
     //     */
     //    public function findByExampleField($value): array
     //    {
-    //        return $this->createQueryBuilder('m')
-    //            ->andWhere('m.exampleField = :val')
+    //        return $this->createQueryBuilder('a')
+    //            ->andWhere('a.exampleField = :val')
     //            ->setParameter('val', $value)
-    //            ->orderBy('m.id', 'ASC')
+    //            ->orderBy('a.id', 'ASC')
     //            ->setMaxResults(10)
     //            ->getQuery()
     //            ->getResult()
     //        ;
     //    }
 
-    //    public function findOneBySomeField($value): ?Medecin
+    //    public function findOneBySomeField($value): ?Actor
     //    {
-    //        return $this->createQueryBuilder('m')
-    //            ->andWhere('m.exampleField = :val')
+    //        return $this->createQueryBuilder('a')
+    //            ->andWhere('a.exampleField = :val')
     //            ->setParameter('val', $value)
     //            ->getQuery()
     //            ->getOneOrNullResult()
