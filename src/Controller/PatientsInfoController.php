@@ -13,8 +13,11 @@ class PatientsInfoController extends AbstractController
     public function index(PatientRepository $patientRepository): Response
     {
         $patients = $patientRepository->findAllPatients();
+
+        $countp =$patientRepository->countP();
         return $this->render('patients_info/index.html.twig', [
             'patients' => $patients,
+            'allp'=>$countp,
         ]);
     }
 }

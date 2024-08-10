@@ -5,18 +5,23 @@ namespace App\Repository;
 use App\Entity\Patient;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\Query\ResultSetMapping;
+use Doctrine\DBAL\Connection;
 use DateTime;
 use DateInterval;
 use Exception;
 use DatePeriod;
+use DateTimeImmutable;
 /**
  * @extends ServiceEntityRepository<Patient>
  */
 class PatientRepository extends ServiceEntityRepository
 {
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Patient::class);
+        
     }
 
     public function findAllPatients(): array
@@ -175,6 +180,77 @@ class PatientRepository extends ServiceEntityRepository
     
         return $dailyIntervals;
     }
+
+    /**
+     * @return array Returns an array of User objects with date_naissance and date_create_at where date_create_at is not null
+     */
+    public function findUsersWithNonNullDateCreateAt(): array
+    {
+        return $this->createQueryBuilder('u')
+            ->select('u.date_naissance', 'u.created_at','u.genre')
+            ->where('u.created_at IS NOT NULL')
+            ->getQuery()
+            ->getArrayResult();
+    }
+    /**
+     * Process the array to return age and formatted created_at.
+     *
+     * @param array $arrayTest Array containing date_naissance and created_at.
+     * @return array Processed array with age and formatted created_at.
+     */
+    public function processPatientArray(array $arrayTest): array
+    {
+        $result = [];
+
+        foreach ($arrayTest as $item) {
+            if (isset($item['date_naissance']) && isset($item['created_at'])) {
+                $dateNaissance = $item['date_naissance'];
+                $createdAt = $item['created_at'];
+                
+
+                // Calculate age
+                $age = $this->calculateAge($dateNaissance);
+
+                // Format created_at
+                $formattedCreatedAt = $this->formatDate($createdAt);
+
+                // Add to result array
+                $result[] = [
+                    'age' => $age,
+                    'created_at' => $formattedCreatedAt,
+                    'genre'=>$item['genre'],
+                ];
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * Calculate age from date of birth.
+     *
+     * @param DateTime $dateNaissance
+     * @return int Age
+     */
+    private function calculateAge(DateTime $dateNaissance): int
+    {
+        $today = new DateTime();
+        $age = $today->diff($dateNaissance)->y;
+        return $age;
+    }
+
+    /**
+     * Format DateTimeImmutable to yyyy/mm/dd.
+     *
+     * @param DateTimeImmutable $createdAt
+     * @return string Formatted date
+     */
+    private function formatDate(DateTimeImmutable $createdAt): string
+    {
+        return $createdAt->format('Y-m-d');
+    }
+        //return age id and date created_at
+
     
     //    /**
     //     * @return Patient[] Returns an array of Patient objects
