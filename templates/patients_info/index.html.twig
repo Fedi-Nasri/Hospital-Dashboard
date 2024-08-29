@@ -114,7 +114,7 @@
                         <tr>
                             <!-- Replace `property1`, `property2`, etc., with actual properties of your object -->
                             <td>{{ patient.id }}</td>
-                            <td>{{ patient.nom }}</td>
+                            <td><a href="{{ path('app_patients', { id_patient:patient.id}) }}" >{{ patient.nom }}</a></td>
                             <td>{{ patient.prenom }}</td>
                             <td>{{ patient.genre }}</td>
                             <td>{{ patient.dateNaissance ? patient.dateNaissance|date('Y/m/d') : 'N/A' }}</td>
@@ -129,6 +129,7 @@
         </div>
         <!--end::cardbody-->
     <!--end::table -->
+
 </div>
     {% block javascripts %}
         {{ parent() }}
@@ -145,6 +146,9 @@ const datatable = $(table).DataTable({
 
 //const selectGender = document.getElementById('selectGender');
 
+document.getElementById("search").addEventListener("keyup", (function(t) {
+        datatable.search(t.target.value).draw()
+    }));
 $(document).ready(function() {
         $('#selectGender').on('select2:select', function(e) {
             var data = e.params.data.id;

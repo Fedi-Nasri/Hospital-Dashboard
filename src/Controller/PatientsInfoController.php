@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+
 use App\Repository\PatientRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,7 +16,10 @@ class PatientsInfoController extends AbstractController
         $patients = $patientRepository->findAllPatients();
 
         $countp =$patientRepository->countP();
+        
+        
         return $this->render('patients_info/index.html.twig', [
+            
             'patients' => $patients,
             'allp'=>$countp,
         ]);

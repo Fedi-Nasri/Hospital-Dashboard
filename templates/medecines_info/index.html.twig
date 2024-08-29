@@ -2,19 +2,380 @@
 
 {% block title %}Hello MedecinesInfoController!{% endblock %}
 
+{% block stylesheets %}
+
+    {{parent()}}
+    <link href="{{ asset("assets/plugins/custom/datatables/datatables.bundle.css") }}" rel="stylesheet"  type="text/css"/>
+    <link href="{{asset("assets/plugins/global/plugins.bundle.css") }}" rel="stylesheet" type="text/css"/>
+{% endblock %}
+
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+<!--begin::container-->
+<div id="kt_content_container" class="container-xxl">
+    <!--begin::Layout-->
+    <div class="d-flex flex-column flex-xl-row">
+        <!--begin::Sidebar-->
+        <div class="flex-column flex-lg-row-auto w-100 w-xl-350px mb-10">
+            <!--begin::Card-->
+            <div class="card mb-5 mb-xl-8">
+                <!--begin::Card body-->
+                <div class="card-body pt-15">
+                    <!--begin::Summary-->
+                    <div class="d-flex flex-center flex-column mb-5">
+                        <!--begin::Name-->
+                        <a href="#" class="fs-3 text-gray-800 text-hover-primary fw-bold mb-1">{{medecin.prenom}} {{medecin.nom}}</a>
+                        <!--end::Name-->
+                        <!--begin::Email-->
+                        <a href="#" class="fs-5 fw-semibold text-muted text-hover-primary mb-6">{{medecin.groupe_soin}}</a>
+                        <!--end::Email-->
+                    </div>
+                    <!--end::Summary-->
+                    <!--begin::Details toggle-->
+                    <div class="d-flex flex-stack fs-4 py-3">
+                        <div class="fw-bold">Details General</div>
+                        <!--begin::Badge-->
+                            <!-- <div class="badge badge-light-info d-inline">Premium user</div>-->
+                        <!--begin::Badge-->
+                    </div>
+                    <!--end::Details toggle-->
+                    <div class="separator separator-dashed my-3"></div>
+                    <!--begin::Details content-->
+                    <div class="pb-5 fs-6">
+                        <!--begin::Details item-->
+                        <div class="fw-bold mt-5">Medecin ID</div>
+                        <div class="text-gray-600">ID- {{medecin.id}}</div>
+                        <!--begin::Details item-->
+                        <!--begin::Details item-->
+                        <div class="fw-bold mt-5">Profession</div>
+                        <div class="text-gray-600">
+                            <a href="#" class="text-gray-600 text-hover-primary">{{medecin.libelle}}</a>
+                        </div>
+                        <!--begin::Details item-->
+                        <!--begin::Details item-->
+                        <div class="fw-bold mt-5">Mobile</div>
+                        <div class="text-gray-600">
+                        {% if medecin.mobile == 'NULL'or  medecin.mobile is empty %}
+                            No information
+                        {% else %}
+                            {{ medecin.mobile }}
+                        {% endif %}
+                        </div>
+                        <!--begin::Details item-->
+                        <!--begin::Details item-->
+                        <div class="fw-bold mt-5">Active</div>
+                        <div class="text-gray-600">{{ medecin.actif ? 'Active' : 'Not Active' }}</div>
+                        <!--begin::Details item-->
+                        
+                    </div>
+                    <!--end::Details content-->
+                </div>
+                <!--end::Card body-->
+            </div>
+            <!--end::Card-->
+        </div>
+        <!--end::Sidebar-->
+        <!--begin::Content-->
+        <div class="flex-lg-row-fluid ms-lg-15">
+            <!--begin:::Tab content-->
+            <div class="tab-content" id="myTabContent">
+                <!--begin:::Tab pane-->
+                <div class="tab-pane fade active show" id="kt_ecommerce_customer_overview" role="tabpanel">
+                    <div class="row row-cols-1 row-cols-md-2 mb-6 mb-xl-9">
+                        <div class="col">
+                            <!--begin::Card-->
+                            <div class="card pt-4 h-md-100 mb-6 mb-md-0">
+                                <!--begin::Card header-->
+                                <div class="card-header border-0">
+                                    <!--begin::Card title-->
+                                    <div class="card-title">
+                                        <h2 class="fw-bold">Nombre de patients examinés</h2>
+                                    </div>
+                                    <!--end::Card title-->
+                                </div>
+                                <!--end::Card header-->
+                                <!--begin::Card body-->
+                                <div class="card-body pt-0">
+                                    <div class="fw-bold fs-2">
+                                        <div class="d-flex">
+                                            <!--begin::Svg Icon | path: icons/duotune/general/gen030.svg-->
+                                            <span class="svg-icon svg-icon-info svg-icon-2x">
+                                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M18.3721 4.65439C17.6415 4.23815 16.8052 4 15.9142 4C14.3444 4 12.9339 4.73924 12.003 5.89633C11.0657 4.73913 9.66 4 8.08626 4C7.19611 4 6.35789 4.23746 5.62804 4.65439C4.06148 5.54462 3 7.26056 3 9.24232C3 9.81001 3.08941 10.3491 3.25153 10.8593C4.12155 14.9013 9.69287 20 12.0034 20C14.2502 20 19.875 14.9013 20.7488 10.8593C20.9109 10.3491 21 9.81001 21 9.24232C21.0007 7.26056 19.9383 5.54462 18.3721 4.65439Z" fill="currentColor"></path>
+                                                </svg>
+                                            </span>
+                                            <!--end::Svg Icon-->
+                                            <div class="ms-2">{{nb_patient['nb_patient']}}
+                                                <span class="text-muted fs-4 fw-semibold">Patients</span></div>
+                                        </div>
+                                        <!--<div class="fs-7 fw-normal text-muted">Earn reward points with every purchase.</div>-->
+                                    </div>
+                                </div>
+                                <!--end::Card body-->
+                            </div>
+                            <!--end::Card-->
+                        </div>
+                    </div>
+                    <!--begin::card-->
+                    <div class="card mb-10 pt-4">
+                    <!-- {{dump(medecin)}}
+                    {{dump(services)}}-->
+                            <!--begin::Title-->
+                            <h2 class="card-header border-0 card-title ">Details :</h2>
+                            <!--end::Title-->
+                            <!--begin::Details-->
+                            <div class="card-body pt-0 pb-5 d-flex flex-wrap py-5">
+                                <!--begin::Row-->
+                                <div class="flex-equal me-5">
+                                    <!--begin::Details-->
+                                    <table class="table fs-6 fw-semibold gs-0 gy-2 gx-2 m-0">
+                                        <!--begin::Row-->
+                                        <tbody>
+                                            <tr>
+                                                <td class="text-gray-400 min-w-175px w-175px">Medecin ID :</td>
+                                                <td class="text-gray-800 min-w-200px">
+                                                    <a href="#" class="text-gray-800 text-hover-primary">{{medecin.id}}</a>
+                                                </td>
+                                            </tr>
+                                            <!--end::Row-->
+                                            <!--begin::Row-->
+                                            <tr>
+                                                <td class="text-gray-400">Nom Prenom:</td>
+                                                <td class="text-gray-800 m-l 2">{{medecin.nom}} {{medecin.prenom}} </td>
+                                            </tr>
+                                            <!--end::Row-->
+                                            
+                                            <!--begin::Row-->
+                                            <tr>
+                                                <td class="text-gray-400">Phone:</td>
+                                                <td class="text-gray-800">
+                                                {% if medecin.mobile == 'NULL'or  medecin.mobile is empty %}
+                                                    No information
+                                                {% else %}
+                                                    {{ medecin.mobile }}
+                                                {% endif %}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-gray-400">Email:</td>
+                                                <td class="text-gray-800">{{medecin.email ?? 'No information'}}</td>
+                                            </tr>
+                                            <!--end::Row-->
+                                            <!--begin::Row-->
+                                            <tr>
+                                                <td class="text-gray-400">Libelle de Fonctionnement:</td>
+                                                <td class="text-gray-800">{{medecin.annuaire_fonction_libelle ?? 'No information'}}</td>
+                                            </tr>
+                                            <!--end::Row-->
+                                        </tbody>
+                                    </table>
+                                    <!--end::Details-->
+                                </div>
+                                <!--end::Row-->
+                                <!--begin::Row-->
+                                <div class="flex-equal">
+                                    <!--begin::Details-->
+                                    <table class="table fs-6 fw-semibold gs-0 gy-2 gx-2 m-0">
+                                        <!--begin::Row-->
+                                        <tbody>
+                                            <!--begin::Row-->
+                                            <tr>
+                                                <td class="text-gray-400">Services :</td>
+                                                <td class="text-gray-800">
+                                                {% if services is empty %}
+                                                    No information
+                                                {% else %}
+                                                    {% for service in services %}
+                                                        {{ service }}{% if not loop.last %}, {% endif %}
+                                                    {% endfor %}
+                                                {% endif %}
+                                                </td>
+                                            </tr>
+                                            <!--end::Row-->
+                                            <!--begin::Row-->
+                                            <tr>
+                                                <td class="text-gray-400">Etablissement  :</td>
+                                                <td class="text-gray-800">{{medecin.annuaire_etablissement_libelle ?? 'No information'}} </td>
+                                            </tr>
+                                            <!--end::Row-->
+                                        </tbody>
+                                    </table>
+                                    <!--end::Details-->
+                                </div>
+                                <!--end::Row-->
+                            </div>
+                            <!--end::Row-->
+                    </div>
+                    <!--end::card-->
+                </div>
+                <!--end:::Tab pane-->
+            </div>
+            <!--end:::Tab content-->
+        </div>
+        <!--end::Content-->
+    </div>
+    <!--end::Layout-->
+    <div class="row">
+                    <!--begin::Card-->
+                    <div class="card pt-4 mb-6 mb-xl-9">
+                        <!--begin::Card header-->
+                        <div class="card-header border-0">
+                            <!--begin::Card title-->
+                            <div class="card-title">
+                                <h2>Consultation</h2>
+                            </div>
+                            <!--end::Card title-->
+                            <!--begin::Card toolbar-->
+                            <div class="card-toolbar my-1">
+                                <!--begin::Search-->
+                                <div class="d-flex align-items-center position-relative my-1">
+                                    <!--begin::Svg Icon | path: icons/duotune/general/gen021.svg-->
+                                    <span class="svg-icon svg-icon-3 position-absolute ms-3">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <rect opacity="0.5" x="17.0365" y="15.1223" width="8.15546" height="2" rx="1" transform="rotate(45 17.0365 15.1223)" fill="currentColor"></rect>
+                                            <path d="M11 19C6.55556 19 3 15.4444 3 11C3 6.55556 6.55556 3 11 3C15.4444 3 19 6.55556 19 11C19 15.4444 15.4444 19 11 19ZM11 5C7.53333 5 5 7.53333 5 11C5 14.4667 7.53333 17 11 17C14.4667 17 17 14.4667 17 11C17 7.53333 14.4667 5 11 5Z" fill="currentColor"></path>
+                                        </svg>
+                                    </span>
+                                    <!--end::Svg Icon-->
+                                    <input type="text" id="search_medecin" class="form-control form-control-solid form-select-sm w-150px ps-9" placeholder="Search Order">
+                                </div>
+                                <!--end::Search-->
+                            </div>
+                            <!--begin::Card toolbar-->
+                        </div>
+                        <!--{{dump(consultations)}}-->
+                        <!--end::Card header-->
+                        <!--begin::Card body-->
+                        <div class="card-body pt-0 pb-5">
+                            <!--begin::Table-->
+                            <div id="kt_table_customers_payment_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+                                <div class="table-responsive">
+                                    <table id="medcin_consultation" class="table align-middle table-row-dashed gy-5 dataTable no-footer" >
+                                        <!--begin::Table head-->
+                                        <thead class="border-bottom border-gray-200 fs-7 fw-bold">
+                                            <!--begin::Table row-->
+                                            <tr class="text-start text-muted text-uppercase gs-0">
+                                                <th class="min-w-100 sorting"  style="width: 133.312px;"   aria-label="order No.: activate to sort column ascending" >ID Patient</th>
+                                                <th class="sorting"    aria-label="Status: activate to sort column ascending" style="width: 112.625px;">Nom Patient</th>
+                                                <th class="sorting"    aria-label="Amount: activate to sort column ascending" style="width: 108.225px;">Etat Soin</th>
+                                                <th class="min-w-100px sorting"    aria-label="Rewards: activate to sort column ascending" style="width: 150.312px;">Mode Soin</th>
+                                                <th class="min-w-100px "  aria-label="Date" style="width: 207.7px;">Date</th>
+                                                <th class="min-w-100px sorting"  style="width: 100px;">Inscription ID</th>
+                                            </tr>
+                                            <!--end::Table row-->
+                                        </thead>
+                                        <!--end::Table head-->
+                                        <!--begin::Table body-->
+                                        <tbody class="fs-6 fw-semibold text-gray-600">
+                                            {% for consultation in consultations %}
+                                                <tr class="{{ loop.index % 2 == 0 ? 'even' : 'odd' }}">
+                                                <!--begin::ID consultation=-->
+                                                <td>
+                                                    <a href="{{ path('app_patients', { id_patient:consultation.patient_id}) }}" class="text-gray-600 text-hover-primary mb-1">{{consultation.patient_id}}</a>
+                                                </td>
+                                                <!--end::ID consultation=-->
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+                                                <!--begin::Nom patient=-->
+                                                <td>
+                                                    <a href="#" class="text-gray-600 text-hover-primary mb-1">{{consultation.prenom}} {{consultation.nom}}</a>
+                                                </td>
+                                                <!--end::Nom patient=-->
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>C:/Users/acer/Desktop/Fedi/WebApp/Hospital_Dashboard/src/Controller/MedecinesInfoController.php</code></li>
-        <li>Your template at <code>C:/Users/acer/Desktop/Fedi/WebApp/Hospital_Dashboard/templates/medecines_info/index.html.twig</code></li>
-    </ul>
+                                                <!--begin::Amount=-->
+                                                <td>{{consultation.etat_soin}}</td>
+                                                <!--end::Amount=-->
+                                                
+                                                <!--begin::Status=-->
+                                                <td>
+                                                    <span >{{consultation.mode_soin}}</span>
+                                                </td>
+                                                <!--end::Status=-->
+                                                <!--begin::Date=-->
+                                                <td>{{consultation.date_inscription}}</td>
+                                                <!--end::Date=-->
+                                                <!--begin::ID Inscription=-->
+                                                <td class="text-end">
+                                                    <a href="#" class="text-gray-600 text-hover-primary mb-1 ">{{consultation.id}}</a>
+                                                </td>
+                                                <!--end::ID Inscription=-->
+                                                </tr>
+                                            {% else %}
+                                                <tr>
+                                                    <td colspan="7">No medecins found.</td>
+                                                </tr>
+                                            {% endfor %}
+                                            {# 
+                                            <tr class="odd">
+                                                <!--begin::ID consultation=-->
+                                                <td>
+                                                    <a href="#" class="text-gray-600 text-hover-primary mb-1">19</a>
+                                                </td>
+                                                <!--end::ID consultation=-->
+
+                                                <!--begin::Nom patient=-->
+                                                <td>
+                                                    <a href="#" class="text-gray-600 text-hover-primary mb-1">Monji Slewti</a>
+                                                </td>
+                                                <!--end::Nom patient=-->
+
+                                                <!--begin::Amount=-->
+                                                <td>type de consultation</td>
+                                                <!--end::Amount=-->
+                                                
+                                                <!--begin::Status=-->
+                                                <td>
+                                                    <span class="badge badge-light-success">Successful</span>
+                                                </td>
+                                                <!--end::Status=-->
+                                                <!--begin::Date=-->
+                                                <td>14 Dec 2020, 8:43 pm</td>
+                                                <!--end::Date=-->
+                                                <!--begin::ID Inscription=-->
+                                                <td class="text-end">
+                                                    <a href="#" class="text-gray-600 text-hover-primary mb-1 ">89</a>
+                                                </td>
+                                                <!--end::ID Inscription=-->
+                                            </tr>
+                                            <tr class="even">
+                                                <!--begin::order=-->
+                                                <td>
+                                                    <a href="#" class="text-gray-600 text-hover-primary mb-1 ">90</a>
+                                                </td>
+                                                <!--end::order=-->
+                                                <!--begin::Nom Patient=-->
+                                                <td >Mehrziya bou mezwed</td>
+                                                <!--end::Nom Patient=-->
+                                                
+                                                <!--begin::type de consiltation =-->
+                                                <td>Type consultation</td>
+                                                <!--end::type de consiltation =-->
+                                                <!--begin::Status=-->
+                                                <td>
+                                                    <span class="badge badge-light-success">Successful</span>
+                                                </td>
+                                                <!--end::Status=-->
+                                                <!--begin::Date=-->
+                                                <td>2023/13/56</td>
+                                                <!--end::Date=-->
+                                                <!--begin::ID Inscription=-->
+                                                <td class="text-end">
+                                                    <a href="#" class="text-gray-600 text-hover-primary mb-1 ">89</a>
+                                                </td>
+                                                <!--end::ID Inscription=-->
+                                            </tr>
+                                            #}
+                                        </tbody>
+                                        <!--end::Table body-->
+                                    </table>
+                                </div>
+                            </div>
+                            <!--end::Table-->
+                        </div>
+                        <!--end::Card body-->
+                    </div>
+                    <!--end::Card-->
+    </div>
 </div>
+<!--end::container-->
+<script src="{{ asset('assets/plugins/custom/datatables/datatables.bundle.js') }}"></script>
+<script src="{{ asset('assets/js/customjs/Medecin_detail.js') }}"></script>
 {% endblock %}

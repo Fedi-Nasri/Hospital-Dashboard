@@ -2,19 +2,109 @@
 
 {% block title %}Hello MedecinsController!{% endblock %}
 
+{% block stylesheets %}
+    {{parent()}}
+    <link href="{{ asset('assets/plugins/global/plugins.bundle.css') }}" rel="stylesheet" type="text/css"/>
+    <link href="{{ asset('assets/plugins/custom/datatables/datatables.bundle.css') }}" rel="stylesheet" type="text/css"/>
+{% endblock %}
+
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
-
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>C:/Users/acer/Desktop/Fedi/WebApp/Hospital_Dashboard/src/Controller/MedecinsController.php</code></li>
-        <li>Your template at <code>C:/Users/acer/Desktop/Fedi/WebApp/Hospital_Dashboard/templates/medecins/index.html.twig</code></li>
-    </ul>
+<div id="kt_content_container" class="container-xxl">
+    <div class="card card-flush mt-6 mt-xl-9">
+        <!--begin::Card header-->
+        <div class="card-header mt-5">
+            <!--begin::Card title-->
+            <div class="card-title flex-column">
+                <h3 class="fw-bold mb-1">Medeicn</h3>
+                <div class="fs-6 text-gray-400">Total 145 Medecin</div>
+            </div>
+            <!--begin::Card title-->
+            <!--begin::Card toolbar-->
+            <div class="card-toolbar my-1">
+                <!--begin::Search-->
+                <div class="d-flex align-items-center position-relative my-1">
+                    <!--begin::Svg Icon | path: icons/duotune/general/gen021.svg-->
+                    <span class="svg-icon svg-icon-3 position-absolute ms-3">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect opacity="0.5" x="17.0365" y="15.1223" width="8.15546" height="2" rx="1" transform="rotate(45 17.0365 15.1223)" fill="currentColor"></rect>
+                            <path d="M11 19C6.55556 19 3 15.4444 3 11C3 6.55556 6.55556 3 11 3C15.4444 3 19 6.55556 19 11C19 15.4444 15.4444 19 11 19ZM11 5C7.53333 5 5 7.53333 5 11C5 14.4667 7.53333 17 11 17C14.4667 17 17 14.4667 17 11C17 7.53333 14.4667 5 11 5Z" fill="currentColor"></path>
+                        </svg>
+                    </span>
+                    <!--end::Svg Icon-->
+                    <input type="text" id="search_medecin" class="form-control form-control-solid form-select-sm w-150px ps-9" placeholder="Search Order">
+                </div>
+                <!--end::Search-->
+            </div>
+            <!--begin::Card toolbar-->
+        </div>
+        <!--end::Card header-->
+        <!--begin::Card body-->
+        <div class="card-body pt-0">
+            <!--begin::Table container-->
+            <div class="table-responsive">
+                <!--begin::Table-->
+                <div class="dataTables_wrapper dt-bootstrap4 no-footer">
+                    <div class="table-responsive">
+                        <table id="medecin_table" class="table table-row-bordered table-row-dashed gy-4 align-middle fw-bold dataTable no-footer">
+                            <!--begin::Head-->
+                            <thead class="fs-7 text-gray-400 text-uppercase">
+                                <tr>
+                                    <th class=" min-w-10px sorting"  style="width: 10px;" >ID</th>
+                                    <th class="min-w-90px sorting"  style="width: 90px;">Nom/Prénom</th>
+                                    <th class="min-w-150px sorting"   style="width: 150px;">Groupe de Soin</th>
+                                    <th class="min-w-90px sorting"    style="width: 95.85px;">Profession</th>
+                                    <th class="min-w-90px sorting"  style="width: 90px;">Telephone</th>
+                                    <th class="min-w-50px sorting"   style="width: 62.8875px;">Active</th>
+                                    <th class="min-w-50px text-end sorting"  style="width: 50px;">Action</th>
+                                </tr>
+                            </thead>
+                            <!--end::Head-->
+                            <!--begin::Body-->
+                            <tbody class="fs-6">
+                                {% for medecin in medecins %}
+                                <tr class="{{ loop.index % 2 == 0 ? 'even' : 'odd' }}">
+                                    <td>{{ medecin.id }}</td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="d-flex flex-column justify-content-center">
+                                                <a href="{{ path('app_medecines_info', { id_medecin:medecin.id}) }}" class="fs-6 text-gray-800 text-hover-primary">{{ medecin.nom }} {{ medecin.prenom }}</a>
+                                                <div class="fw-semibold text-gray-400">{{ medecin.email ?? 'No Email' }}</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>{{ medecin.groupe_soin_libelle ?? 'Not Found' }}</td>
+                                    <td>{{ medecin.profession_libelle ?? 'Not Found' }}</td>
+                                    <td>{{ medecin.mobile ?? 'N/A' }}</td>
+                                    <td>
+                                        <span class="badge badge-light-{{ medecin.actif ? 'success' : 'danger' }} fw-bold px-4 py-3">
+                                            {{ medecin.actif ? 'Active' : 'Not Active' }}
+                                        </span>
+                                    </td>
+                                    <td class="text-end">
+                                        <a href="#" class="btn btn-light btn-sm">View</a>
+                                    </td>
+                                </tr>
+                            {% else %}
+                                <tr>
+                                    <td colspan="7">No medecins found.</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                            <!--end::Body-->
+                        </table>
+                    </div>
+                </div>
+                <!--end::Table-->
+            </div>
+            <!--end::Table container-->
+        </div>
+        <!--end::Card body-->
+    </div>
+    
 </div>
+
+<script src="{{ asset('assets/plugins/global/plugins.bundle.js')}}"></script>
+<script src="{{ asset('assets/plugins/custom/datatables/datatables.bundle.js') }}"></script>
+<script src="{{ asset('assets/js/customjs/MedecinTab.js') }}"></script>
+
 {% endblock %}

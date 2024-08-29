@@ -2,19 +2,495 @@
 
 {% block title %}Hello PatientsController!{% endblock %}
 
+{% block stylesheets %}
+    {{parent()}}
+    <link href="{{ asset('assets/plugins/global/plugins.bundle.css') }}" rel="stylesheet" type="text/css"/>
+    <link href="{{ asset('assets/plugins/custom/datatables/datatables.bundle.css') }}" rel="stylesheet" type="text/css"/>
+{% endblock %}
+
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+<div id="kt_content_container" class="container-xxl">
+    <!--begin::layout-->
+    <div class="d-flex flex-column flex-lg-row">
+	    <!--begin::Content-->
+        <div class="flex-lg-row-fluid me-lg-15 order-2 order-lg-1 mb-10 mb-lg-0">
+			<!--begin::Card-->
+            <div class="card card-flush pt-3 mb-5 mb-xl-10">
+                <!--begin::Card header-->
+                <div class="card-header">
+                    <!--begin::Card title-->
+                    <div class="card-title">
+                        <h2 class="fw-bold">Patient Details</h2>
+                    </div>
+                    <!--begin::Card title-->
+                    <!--begin::Card toolbar-->
+                    <div class="card-toolbar">
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_1" >Update Patient</button>
+                    </div>
+                    <!--end::Card toolbar-->
+                </div>
+                <!--end::Card header-->
+                <!--begin::Card body-->
+                <div class="card-body pt-3">
+                    <!--begin::Section-->
+                    <div class="mb-10">
+                        <!--begin::Title-->
+                        <h5 class="mb-4">Detail Generale:</h5>
+                        <!--end::Title-->
+                        <!--begin::Details-->
+                        <div class="d-flex flex-wrap py-5">
+                            <!--begin::Row-->
+                            <div class="flex-equal me-5">
+                                <!--begin::Details-->
+                                <table class="table fs-6 fw-semibold gs-0 gy-2 gx-2 m-0">
+                                    <!--begin::Row-->
+                                    <tbody>
+                                        <tr>
+                                            <td class="text-gray-400 min-w-175px w-175px">Patient id:</td>
+                                            <td class="text-gray-800 min-w-200px">
+                                                <a href="#" class="text-gray-800 text-hover-primary">{{patient.id}}</a>
+                                            </td>
+                                        </tr>
+                                        <!--end::Row-->
+                                        <!--begin::Row-->
+                                        <tr>
+                                            <td class="text-gray-400">Nom Prenom:</td>
+                                            <td class="text-gray-800 m-l 2">{{patient.full_name}}               <span  class="text-gray-800 m-7">  {{patient.prenom_arab}} {{patient.nom_arab}}</span> <span  class="text-gray-400">  Nom Arab</span></td>
+                                        </tr>
+                                        <!--end::Row-->
+                                        <!--begin::Row-->
+                                        <tr>
+                                            <td class="text-gray-400">Address:</td>
+                                            <td class="text-gray-800">{{patient.adresse}}</td>
+                                        </tr>
+                                        <!--end::Row-->
+                                        <!--begin::Row-->
+                                        <tr>
+                                            <td class="text-gray-400">Phone:</td>
+                                            <td class="text-gray-800">{{patient.telephone ?? 'Vide... '}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-gray-400">Email:</td>
+                                            <td class="text-gray-800">{{patient.email ?? 'Vide... '}}</td>
+                                        </tr>
+                                        <!--end::Row-->
+                                    </tbody>
+                                </table>
+                                <!--end::Details-->
+                            </div>
+                            <!--end::Row-->
+                            <!--begin::Row-->
+                            <div class="flex-equal">
+                                <!--begin::Details-->
+                                <table class="table fs-6 fw-semibold gs-0 gy-2 gx-2 m-0">
+                                    <!--begin::Row-->
+                                    <tbody>
+                                        <tr>
+                                            <td class="text-gray-400 min-w-175px w-175px">Date de naissance :</td>
+                                            <td class="text-gray-800 min-w-200px">
+                                                <a href="#" class="text-gray-800 text-hover-primary">{{patient.date_naissance}}</a>
+                                            </td>
+                                        </tr>
+                                        <!--end::Row-->
+                                        <!--begin::Row-->
+                                        <tr>
+                                            <td class="text-gray-400">CIN :</td>
+                                            <td class="text-gray-800">{{patient.cin}}</td>
+                                        </tr>
+                                        <!--end::Row-->
+                                        <!--begin::Row-->
+                                        <tr>
+                                            <td class="text-gray-400">Provenance:</td>
+                                            <td class="text-gray-800">{{patient.provenance}}</td>
+                                            <td class="text-gray-400">Assurance ID:</td>
+                                            <td class="text-gray-800">{{patient.identifiant_assure}}</td>
+                                        </tr>
+                                        <!--end::Row-->
+                                        <!--begin::Row-->
+                                        <tr>
+                                            <td class="text-gray-400">Etablissement  :</td>
+                                            <td class="text-gray-800">GROUPEMENT DE SANTE DE BASE DE L'ARIANA </td>
+                                        </tr>
+                                        <!--end::Row-->
+                                        <!--begin::Row-->
+                                        <tr>
+                                            <td class="text-gray-400">date de creation  :</td>
+                                            <td class="text-gray-800">{{patient.created_at}} </td>
+                                        </tr>
+                                        <!--end::Row-->
+                                    </tbody>
+                                </table>
+                                <!--end::Details-->
+                            </div>
+                            <!--end::Row-->
+                        </div>
+                        <!--end::Row-->
+                    </div>
+                    <!--end::Section-->
+                    <!--begin::Section-->
+                    <div class="mb-0">
+                        <!--begin::Title-->
+                        <h5 class="mb-4">Consultation :</h5>
+                        <!--end::Title-->
+                        <!--begin::Product table-->
+                        <div class="table-responsive">
+                            <!--begin::Table-->
+                            <table id="PatientTabID" class="table align-middle table-row-dashed fs-6 gy-4 mb-0">
+                                <!--begin::Table head-->
+                                <thead>
+                                    <!--begin::Table row-->
+                                    <tr class="border-bottom border-gray-200 text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
+                                        <th class="min-w-50px">Consultation ID</th>
+                                        <th class="min-w-125px">Type</th>
+                                        <th class="min-w-125px">medcin</th>
+                                        <th class="min-w-125px">Statut</th>
+                                        <th class="min-w-125px">date de creation</th>
+                                        <th class="text-end min-w-70px">Actions</th>
+                                    </tr>
+                                    <!--end::Table row-->
+                                </thead>
+                                <!--end::Table head-->
+                                <!--begin::Table body-->
+                                <tbody class="fw-semibold text-gray-800">
+                                    {% for consultation in consultations %}
+                                        <tr>
+                                            <td>{{consultation.consultation_id}}</td>
+                                            <td>
+                                                <span class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">{{consultation.type}}</span>
+                                            </td>
+                                            
+                                            <td>
+                                                <label class="w-150px">{{consultation.medecin_prenom}} {{consultation.medecin_nom}}</label>
+                                                <div class="fw-normal text-gray-600">{{consultation.profession_libelle}}</div>
+                                            </td>
+                                            <td>{{consultation.statut}}</td>
+                                            <td>{{consultation.date_creation}}</td>
+                                            <td class="text-end">
+                                            <!--begin::Action-->
+                                            <a href="#" class="btn btn-icon btn-active-light-primary w-30px h-30px" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
+                                                <!--begin::Svg Icon | path: icons/duotune/general/gen019.svg-->
+                                                <span class="svg-icon svg-icon-3">
+                                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path d="M17.5 11H6.5C4 11 2 9 2 6.5C2 4 4 2 6.5 2H17.5C20 2 22 4 22 6.5C22 9 20 11 17.5 11ZM15 6.5C15 7.9 16.1 9 17.5 9C18.9 9 20 7.9 20 6.5C20 5.1 18.9 4 17.5 4C16.1 4 15 5.1 15 6.5Z" fill="currentColor"></path>
+                                                        <path opacity="0.3" d="M17.5 22H6.5C4 22 2 20 2 17.5C2 15 4 13 6.5 13H17.5C20 13 22 15 22 17.5C22 20 20 22 17.5 22ZM4 17.5C4 18.9 5.1 20 6.5 20C7.9 20 9 18.9 9 17.5C9 16.1 7.9 15 6.5 15C5.1 15 4 16.1 4 17.5Z" fill="currentColor"></path>
+                                                    </svg>
+                                                </span>
+                                                <!--end::Svg Icon-->
+                                            </a>
+                                            <!--begin::Menu-->
+                                            <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-6 w-200px py-4" data-kt-menu="true">
+                                                <!--begin::Menu item-->
+                                                <div class="menu-item px-3">
+                                                    <a href="#" class="menu-link px-3" data-kt-subscriptions-view-action="delete">Edit Consultation</a>
+                                                </div>
+                                                <!--end::Menu item-->
+                                                <!--begin::Menu item-->
+                                                <div class="menu-item px-3">
+                                                    <a href="#" class="menu-link text-danger px-3" data-kt-subscriptions-view-action="edit">Cancel Consultation</a>
+                                                </div>
+                                                <!--end::Menu item-->
+                                            </div>
+                                            <!--end::Menu-->
+                                            <!--end::Action-->
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                                <!--end::Table body-->
+                            </table>
+                            <!--end::Table-->
+                        </div>
+                        <!--end::Product table-->
+                    </div>
+                    <!--end::Section-->
+                </div>
+                <!--end::Card body-->
+                <!--{{dump(consultations)}}-->
+            </div>
+            <!--end::card-->
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>C:/Users/acer/Desktop/Fedi/WebApp/Hospital_Dashboard/src/Controller/PatientsController.php</code></li>
-        <li>Your template at <code>C:/Users/acer/Desktop/Fedi/WebApp/Hospital_Dashboard/templates/patients/index.html.twig</code></li>
-    </ul>
+            <!--begin::card-->
+            <div class="card card-flush pt-3 mb-5 mb-xl-10">
+                <!--begin::Card header-->
+                <div class="card-header">
+                    <!--begin::Card title-->
+                    <div class="card-title">
+                        <h2>Inscription</h2>
+                    </div>
+                    <!--end::Card title-->
+                    <!--begin::Toolbar-->
+                    <div class="card-toolbar">
+                    
+                    </div>
+                    <!--end::Toolbar-->
+                </div>
+                <!--end::Card header-->
+                <!--begin::Card body-->
+                <div class="card-body pt-2">
+                    <!--begin::Tab Content-->
+                    <div class="tab-content">
+                        
+                            <!--begin::Table wrapper-->
+                            <div class="table-responsive">
+                                <!--begin::Table-->
+                                <table id="patient_inscription" class="table align-middle table-row-dashed fs-6 fw-bold gs-0 gy-4 p-0 m-0">
+                                    <!--begin::Thead-->
+                                    <thead class="border-bottom border-gray-200 fs-7 text-uppercase fw-bold">
+                                        <tr class="text-start text-gray-400">
+                                            <th class="min-w-100px">Inscription ID</th>
+                                            <th class="min-w-100px">Service</th>
+                                            <th class="min-w-100px">Medcin</th>
+                                            <th class="min-w-50px">Mode de Soin</th>
+                                            <th class="min-w-50px">Etat de Soin</th>
+                                            <th class="w-150">Etablissement</th>
+                                            <th class="w-100px">Type</th>
+                                            <th class="w-100px">Date de creation</th>
+                                        </tr>
+                                    </thead>
+                                    <!--end::Thead-->
+                                    <!--begin::Tbody-->
+                                    <tbody class="fs-6 fw-semibold text-gray-600">
+                                        {% for inscription in inscriptions %}
+                                            <tr>
+                                                <td>
+                                                    <a href="#" class="text-gray-600 text-hover-primary">{{inscription.id}}</a>
+                                                </td>
+                                                <td class="text-success">{{inscription.libelle}}</td>
+                                                <td>
+                                                    <span class="">{{inscription.medecin_prenom}} {{inscription.medecin_nom}}</span>
+                                                </td>
+                                                <td>{{inscription.mode_soin_libelle}}</td>
+                                                <td>{{inscription.etat_de_soin}}</td>
+                                                <td class="">
+                                                    {{inscription.etablissement_libelle}}
+                                                </td>
+                                                <td>{{inscription.type}}</td>
+                                                <td>{{inscription.date_inscription}}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                    <!--end::Tbody-->
+                                </table>
+                                <!--end::Table-->
+                            </div>
+                            <!--end::Table wrapper-->
+                    </div>
+                    <!--end::Tab Content-->
+                </div>
+                <!--end::Card body-->
+            </div>
+            <!--end::card-->
+                    <!--{{dump(inscriptions)}}-->
+        </div>
+        <!--end::content-->
+    </div>
+    <!--end::layout-->
 </div>
+
+<div class="modal fade" tabindex="-1" id="kt_modal_1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Modal title</h3>
+
+                <!--begin::Close-->
+                <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
+                    <span class="svg-icon svg-icon-1"></span>
+                </div>
+                <!--end::Close-->
+            </div>
+
+            <div class="modal-body">
+                <form class="form fv-plugins-bootstrap5 fv-plugins-framework" action="#" id="kt_modal_new_address_form">
+                    <!--begin::Modal header-->
+                    <div class="modal-header" id="kt_modal_new_address_header">
+                        <!--begin::Modal title-->
+                        <h2>Edit Patient</h2>
+                        <!--end::Modal title-->
+                        <!--begin::Close-->
+                        <div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
+                            <!--begin::Svg Icon | path: icons/duotune/arrows/arr061.svg-->
+                            <span class="svg-icon svg-icon-1">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <rect opacity="0.5" x="6" y="17.3137" width="16" height="2" rx="1" transform="rotate(-45 6 17.3137)" fill="currentColor"></rect>
+                                    <rect x="7.41422" y="6" width="16" height="2" rx="1" transform="rotate(45 7.41422 6)" fill="currentColor"></rect>
+                                </svg>
+                            </span>
+                            <!--end::Svg Icon-->
+                        </div>
+                        <!--end::Close-->
+                    </div>
+                    <!--end::Modal header-->
+                    <!--begin::Modal body-->
+                    <div class="modal-body py-10 px-lg-17">
+                        <!--begin::Scroll-->
+                        <div class="scroll-y me-n7 pe-7" id="kt_modal_new_address_scroll" data-kt-scroll="true" data-kt-scroll-activate="{default: false, lg: true}" data-kt-scroll-max-height="auto" data-kt-scroll-dependencies="#kt_modal_new_address_header" data-kt-scroll-wrappers="#kt_modal_new_address_scroll" data-kt-scroll-offset="300px">
+                            <!--begin::Notice-->
+                            <!--begin::Notice-->
+                            <div class="notice d-flex bg-light-warning rounded border-warning border border-dashed mb-9 p-6">
+                                <!--begin::Icon-->
+                                <!--begin::Svg Icon | path: icons/duotune/general/gen044.svg-->
+                                <span class="svg-icon svg-icon-2tx svg-icon-warning me-4">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <rect opacity="0.3" x="2" y="2" width="20" height="20" rx="10" fill="currentColor"></rect>
+                                        <rect x="11" y="14" width="7" height="2" rx="1" transform="rotate(-90 11 14)" fill="currentColor"></rect>
+                                        <rect x="11" y="17" width="2" height="2" rx="1" transform="rotate(-90 11 17)" fill="currentColor"></rect>
+                                    </svg>
+                                </span>
+                                <!--end::Svg Icon-->
+                                <!--end::Icon-->
+                                <!--begin::Wrapper-->
+                                <div class="d-flex flex-stack flex-grow-1">
+                                    <!--begin::Content-->
+                                    <div class="fw-semibold">
+                                        <h4 class="text-gray-900 fw-bold">Warning</h4>
+                                        <div class="fs-6 text-gray-700">Updating Patient may effect  your
+                                            <a href="#"> database</a></div>
+                                    </div>
+                                    <!--end::Content-->
+                                </div>
+                                <!--end::Wrapper-->
+                            </div>
+                            <!--end::Notice-->
+                            <!--end::Notice-->
+                            <!--begin::Input group-->
+                            <div class="row mb-5">
+                                <!--begin::Col-->
+                                <div class="col-md-6 fv-row fv-plugins-icon-container">
+                                    <!--begin::Label-->
+                                    <label class="required fs-5 fw-semibold mb-2">Nom</label>
+                                    <!--end::Label-->
+                                    <!--begin::Input-->
+                                    <input type="text" id="nom" class="form-control form-control-solid" placeholder="" name="Nom">
+                                    <!--end::Input-->
+                                    <div class="fv-plugins-message-container invalid-feedback"></div>
+                                </div>
+                                <!--end::Col-->
+                                <!--begin::Col-->
+                                <div class="col-md-6 fv-row fv-plugins-icon-container">
+                                    <!--end::Label-->
+                                    <label class="required fs-5 fw-semibold mb-2">Prénom</label>
+                                    <!--end::Label-->
+                                    <!--end::Input-->
+                                    <input type="text" id="prenom" class="form-control form-control-solid" placeholder="" name="Prénom">
+                                    <!--end::Input-->
+                                    <div class="fv-plugins-message-container invalid-feedback"></div>
+                                </div>
+                                <!--end::Col-->
+                            </div>
+                            <!--end::Input group-->
+                                                        <!--begin::Input group-->
+                            <div class="row mb-5">
+                                <!--begin::Col-->
+                                <div class="col-md-6 fv-row fv-plugins-icon-container">
+                                    <!--begin::Label-->
+                                    <label class="required fs-5 fw-semibold mb-2">Phone</label>
+                                    <!--end::Label-->
+                                    <!--begin::Input-->
+                                    <input type="text" id="phone" class="form-control form-control-solid" placeholder="" name="phone">
+                                    <!--end::Input-->
+                                    <div class="fv-plugins-message-container invalid-feedback"></div>
+                                </div>
+                                <!--end::Col-->
+                                <!--begin::Col-->
+                                <div class="col-md-6 fv-row fv-plugins-icon-container">
+                                    <!--end::Label-->
+                                    <label class="required fs-5 fw-semibold mb-2">Email</label>
+                                    <!--end::Label-->
+                                    <!--end::Input-->
+                                    <input type="text" id="email" class="form-control form-control-solid" placeholder="" name="email">
+                                    <!--end::Input-->
+                                    <div class="fv-plugins-message-container invalid-feedback"></div>
+                                </div>
+                                <!--end::Col-->
+                            </div>
+                            <!--end::Input group-->
+                            <!--begin::Input group-->
+                            <div class="d-flex flex-column mb-5 fv-row fv-plugins-icon-container">
+                                <!--begin::Label-->
+                                <label class="required fs-5 fw-semibold mb-2">Address</label>
+                                <!--end::Label-->
+                                <!--begin::Input-->
+                                <input id="adress" class="form-control form-control-solid" placeholder="" name="address1">
+                                <!--end::Input-->
+                                <div class="fv-plugins-message-container invalid-feedback"></div>
+                            </div>
+                            <!--end::Input group-->
+                            <!--begin::Input group-->
+                            <div class="row g-9 mb-5">
+                                <!--begin::Col-->
+                                <div class="col-md-6 fv-row fv-plugins-icon-container">
+                                    <!--begin::Input group-->
+                                    <div class="d-flex flex-column mb-5 fv-row fv-plugins-icon-container">
+                                        <!--begin::Label-->
+                                        <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
+                                            <span class="required">etablissement</span>
+                                            <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" aria-label="Your payment statements may very based on selected country" data-kt-initialized="0"></i>
+                                        </label>
+                                        <!--end::Label-->
+                                        <!--begin::Select-->
+                                        <select name="etablissement" data-control="select2"  data-placeholder="Select a etablissement..." class="form-select form-select-solid select2-hidden-accessible"  aria-hidden="true" >
+                                            <option value="" >Select a Country...</option>
+                                            <option value="AF">Afghanistan</option>
+                                            <option value="AX">Aland Islands</option>
+                                        </select>
+                                        <!--end::Select-->
+                                        <div class="fv-plugins-message-container invalid-feedback"></div>
+                                    </div>
+                                    <!--end::Input group-->
+                                </div>
+                                <!--end::Col-->
+                                <!--begin::Col-->
+                                <div class="col-md-6 fv-row fv-plugins-icon-container">
+                                    <!--begin::Label-->
+                                    <label class="fs-5 fw-semibold mb-2">Date de naissance</label>
+                                    <!--end::Label-->
+                                    <!--begin::Input-->
+                                    <input id ="date de naissance"class="form-control form-control-solid" placeholder="" name="state">
+                                    <!--end::Input-->
+                                    <div class="fv-plugins-message-container invalid-feedback"></div>
+                                </div>
+                                <!--end::Col-->
+                            </div>
+                            <!--end::Input group-->
+                        </div>
+                        <!--end::Scroll-->
+                    </div>
+                    <!--end::Modal body-->
+                    <!--begin::Modal footer-->
+                    <div class="modal-footer flex-center">
+                        <!--begin::Button-->
+                        <button type="reset" id="kt_modal_new_address_cancel" class="btn btn-light me-3">Discard</button>
+                        <!--end::Button-->
+                        <!--begin::Button-->
+                        <button type="submit" id="kt_modal_new_address_submit" class="btn btn-primary">
+                            <span class="indicator-label">Submit</span>
+                            <span class="indicator-progress">Please wait...
+                                <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
+                        </button>
+                        <!--end::Button-->
+                    </div>
+                    <!--end::Modal footer-->
+                    <div></div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script>
+function openDialog(firstName) {
+        // Set the value of the input field
+        document.getElementById('input-first-name').value = firstName;
+
+        // Display the dialog (you might need to adjust this depending on your dialog implementation)
+        document.getElementById('dialog').style.display = 'block';
+    }
+
+    //openDialog('Doctor');
+    </script>
+
+<script src="{{ asset('assets/plugins/global/plugins.bundle.js')}}"></script>
+<script src="{{ asset('assets/js/customjs/PatientId.js')}}"></script>
+<script src="{{ asset('assets/plugins/custom/datatables/datatables.bundle.js') }}"></script>
 {% endblock %}
