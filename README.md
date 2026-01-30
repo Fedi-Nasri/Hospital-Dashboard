@@ -17,7 +17,8 @@ This project was developed during an internship at the **Centre Informatique du 
 - [🧠 Tech Stack](#-tech-stack)
 - [🏗️ Project Architecture](#️-project-architecture)
 - [🐳 Docker Setup (Recommended)](#-option-1--docker-setup-recommended)
-- [💻 Local Setup](#-option-2--local-setup-not-recommended)
+- [💻 Local Setup](#-option-2--local-setup)
+- [📸 Screenshots](#-screenshots)
 
 ---
 
@@ -181,7 +182,7 @@ docker compose exec app php bin/phpunit
 
 ---
 
-# 💻 OPTION 2 — Local Setup (Not Recommended)
+# 💻 OPTION 2 — Local Setup
 
 ⚠️ This method may cause issues due to legacy dependencies.
 
@@ -259,3 +260,22 @@ Computer Engineering Student
 
 This project was developed as part of a professional internship in the healthcare IT sector, focusing on data monitoring, visualization, and hospital management systems.
 
+---
+
+## 📸 Screenshots
+
+### Dashboard – Home
+![Dashboard Home](docs/dashboard-home.png)
+
+### Hospital Overview & Analytics
+![Dashboard Overview](docs/dashboard-overview.png)
+
+### Patients Management
+![Patients Table](docs/patients-table.png)
+![Patient Details](docs/patient-details.png)
+
+### Doctors Management
+![Doctors Table](docs/doctors-table.png)
+
+### Consultations
+![Consultations Table](docs/consultations-table.png)
