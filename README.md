@@ -127,14 +127,25 @@ docker compose version
 
 ## ⚙️ Environment Configuration
 
-Create a `.env.local` file:
+1. **Copy the environment template:**
 
-```env
-APP_ENV=dev
-APP_SECRET=change_this_secret
-
-DATABASE_URL="pgsql://postgres:postgres@db:5432/hospital_db"
+```bash
+cp .env.example .env
 ```
+
+2. **(Optional) Edit `.env` if you need custom values:**
+
+```bash
+nano .env  # or use your editor
+```
+
+The default values should work fine for local development:
+- Database: PostgreSQL 16 on `database:5432`
+- App: PHP 8.1-FPM
+- Web: Nginx on `localhost:8000`
+- Admin DB Tool: Adminer on `localhost:8081`
+
+> **⚠️ Important**: Never commit `.env` file to Git! Use `.env.example` for template only.
 
 ---
 
@@ -145,29 +156,42 @@ DATABASE_URL="pgsql://postgres:postgres@db:5432/hospital_db"
 git clone https://github.com/Fedi-Nasri/Hospital-Dashboard.git
 cd Hospital-Dashboard
 
-# Build and start containers
+# Copy environment template
+cp .env.example .env
+
+# Build and start all containers
 docker compose up --build
 ```
 
-Application will be available at:
+**Containers started:**
+- `hospital_app` — Symfony PHP-FPM application
+- `hospital_web` — Nginx web server
+- `hospital_db` — PostgreSQL database
+- `hospital_adminer` — Database management UI
 
-```
-http://localhost:8000
-```
+---
+
+## 🌐 Access the Application
+
+Once containers are running:
+
+| Service | URL | Purpose |
+|---------|-----|---------|
+| **Application** | http://localhost:8000 | Main hospital dashboard |
+| **Database UI** | http://localhost:8081 | Adminer for database management |
+| **Logs** | `docker compose logs -f app` | View application logs |
 
 ---
 
 ## 🗄️ Database Initialization (Docker)
 
-Run migrations inside the container:
+In a **new terminal** (while containers are running):
 
 ```bash
+# Run database migrations
 docker compose exec app php bin/console doctrine:migrations:migrate
-```
 
-(Optional) Load fixtures if available:
-
-```bash
+# (Optional) Load sample fixtures if available
 docker compose exec app php bin/console doctrine:fixtures:load
 ```
 
@@ -179,6 +203,28 @@ docker compose exec app php bin/console doctrine:fixtures:load
 ```bash
 docker compose exec app php bin/phpunit
 ```
+
+---
+
+## 🔄 Composer & Dependencies
+
+To update or install dependencies inside Docker:
+
+```bash
+docker compose exec app composer install
+docker compose exec app composer update
+```
+
+---
+
+## 🛑 Troubleshooting
+
+| Issue | Solution |
+|-------|----------|
+| Port 8000 already in use | Change port in `compose.override.yaml`: `"9000:80"` |
+| Database connection error | Check `DATABASE_URL` in `.env` and ensure `docker compose up` succeeded |
+| Permission denied errors | Ensure Docker daemon is running: `docker ps` |
+| Want fresh database | Run: `docker compose down -v && docker compose up --build` |
 
 ---
 
@@ -215,14 +261,23 @@ composer install
 
 ## ⚙️ Configure Environment
 
-Update `.env.local`:
+1. **Copy the environment template:**
+
+```bash
+cp .env.example .env
+```
+
+2. **Update `.env.local` for local PostgreSQL:**
 
 ```env
 APP_ENV=dev
 APP_SECRET=change_this_secret
-
 DATABASE_URL="pgsql://postgres:password@127.0.0.1:5432/hospital_db"
 ```
+
+Replace `password` with your actual PostgreSQL password.
+
+> **⚠️ Important**: Never commit `.env` file to Git!
 
 ---
 
